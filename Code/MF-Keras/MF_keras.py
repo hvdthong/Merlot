@@ -13,6 +13,9 @@ dataset = pd.read_csv("../data/ml-100k/u.data", sep='\t', names="user_id,item_id
 dataset.user_id = dataset.user_id.astype('category').cat.codes.values
 dataset.item_id = dataset.item_id.astype('category').cat.codes.values
 train, test = train_test_split(dataset, test_size=0.2)
+print train.user_id
+print type(train)
+exit()
 n_users, n_movies = len(dataset.user_id.unique()), len(dataset.item_id.unique())
 n_latent_factors = 3
 print n_users, n_movies
@@ -20,6 +23,7 @@ print n_users, n_movies
 movie_input = keras.layers.Input(shape=[1], name='Item')
 movie_embedding = keras.layers.Embedding(n_movies + 1, n_latent_factors, name='Movie-Embedding')(movie_input)
 movie_vec = keras.layers.Flatten(name='FlattenMovies')(movie_embedding)
+
 user_input = keras.layers.Input(shape=[1], name='User')
 user_vec = keras.layers.Flatten(name='FlattenUsers')(
     keras.layers.Embedding(n_users + 1, n_latent_factors, name='User-Embedding')(user_input))
@@ -29,3 +33,5 @@ model = keras.models.Model([user_input, movie_input], prod)
 model.compile('adam', 'mean_squared_error')
 plot_model(model, to_file="model.png", show_shapes=True, show_layer_names=True)
 model.summary()
+
+history = model.fit([train.user_id, train.item_id], train.rating, epochs=100, verbose=0)
