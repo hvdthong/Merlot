@@ -8,14 +8,12 @@ from keras.optimizers import Adam
 from keras.utils.vis_utils import model_to_dot
 from IPython.display import SVG
 from keras.utils import plot_model
+from sklearn.metrics import mean_absolute_error
 
 dataset = pd.read_csv("../data/ml-100k/u.data", sep='\t', names="user_id,item_id,rating,timestamp".split(","))
 dataset.user_id = dataset.user_id.astype('category').cat.codes.values
 dataset.item_id = dataset.item_id.astype('category').cat.codes.values
 train, test = train_test_split(dataset, test_size=0.2)
-print train.user_id
-print type(train)
-exit()
 n_users, n_movies = len(dataset.user_id.unique()), len(dataset.item_id.unique())
 n_latent_factors = 3
 print n_users, n_movies
@@ -34,4 +32,12 @@ model.compile('adam', 'mean_squared_error')
 plot_model(model, to_file="model.png", show_shapes=True, show_layer_names=True)
 model.summary()
 
-history = model.fit([train.user_id, train.item_id], train.rating, epochs=100, verbose=0)
+history = model.fit([train.user_id, train.item_id], train.rating, epochs=25, verbose=0)
+pd.Series(history.history['loss']).plot(logy=True)
+plt.xlabel("Epoch")
+plt.ylabel("Train Error")
+plt.show()
+
+y_hat = np.round(model.predict([test.user_id, test.item_id]), 0)
+y_true = test.rating
+print mean_absolute_error(y_true, y_hat)
