@@ -27,7 +27,6 @@ def sample_data(df, name, size):
 
     df["Relevant"] = 1
     negative_sample = list()
-    size
     for i in xrange(size):
         user = users[np.random.choice(users.shape[0], 1, replace=False)][0]
         item = items[np.random.choice(items.shape[0], 1, replace=False)][0]
