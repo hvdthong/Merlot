@@ -27,6 +27,7 @@ def sample_data(df, name, size):
 
     df["Relevant"] = 1
     negative_sample = list()
+    size
     for i in xrange(size):
         user = users[np.random.choice(users.shape[0], 1, replace=False)][0]
         item = items[np.random.choice(items.shape[0], 1, replace=False)][0]
@@ -51,7 +52,7 @@ def sample_data(df, name, size):
     negative_sample["Relevant"] = 0
     df = pd.concat([df, negative_sample])
     df = df.sample(frac=1.0)
-    df.to_csv("../data/SO_GH/" + name + "_sample.csv", sep=',', index=False, header=False)
+    df.to_csv("./data/SO_GH/" + name + "_sample.csv", sep=',', index=False, header=False)
 
 
 if __name__ == "__main__":
@@ -59,14 +60,14 @@ if __name__ == "__main__":
     # users = data_category(path_file=path_file_, name="GHSO_users")
     # print users.head(), len(users)
     #
-    path_file_ = "../data/SO_GH/user_repository.csv"
-    user_repository = data_category(path_file=path_file_, name="user_repository")
-    sample_data(df=user_repository, name="user_repository", size=len(user_repository))
+    # path_file_ = "./data/SO_GH/user_repository.csv"
+    # user_repository = data_category(path_file=path_file_, name="user_repository")
+    # sample_data(df=user_repository, name="user_repository", size=len(user_repository))
     # print user_repository.head(), len(user_repository)
 
-    # path_file_ = "../data/SO_GH/user_question.csv"
-    # user_question = data_category(path_file=path_file_, name="user_question")
-    # sample_data(df=user_question, name="user_question", size=len(user_question))
+    path_file_ = "./data/SO_GH/user_question.csv"
+    user_question = data_category(path_file=path_file_, name="user_question")
+    sample_data(df=user_question, name="user_question", size=len(user_question))
     # print user_question.head(), len(user_question)
     # print len(user_question.stackoverflow_question_id.unique())
     # print len(user_question.stackoverflow_user_id.unique())
