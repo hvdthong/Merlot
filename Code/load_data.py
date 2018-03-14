@@ -35,14 +35,16 @@ def sample_data(df, name, size):
             if df.loc[(df['stackoverflow_user_id'] == user) & (df["stackoverflow_question_id"] == item)].empty:
                 index.append(user)
                 index.append(item)
+                negative_sample.append(np.array(index))
         elif name == "user_repository":
             if df.loc[(df['github_user_id'] == user) & (df["github_repository_id"] == item)].empty:
                 index.append(user)
                 index.append(item)
-        negative_sample.append(np.array(index))
+                negative_sample.append(np.array(index))
         print i
     negative_sample = np.array(negative_sample)
     if name == "user_question":
+        print negative_sample.shape
         negative_sample = pd.DataFrame(negative_sample,
                                        columns=["stackoverflow_user_id", "stackoverflow_question_id"])
     elif name == "user_repository":
@@ -51,25 +53,25 @@ def sample_data(df, name, size):
     negative_sample["Relevant"] = 0
     df = pd.concat([df, negative_sample])
     df = df.sample(frac=1.0)
-    df.to_csv("../data/SO_GH/" + name + "_sample.csv", sep=',', index=False, header=False)
+    df.to_csv("./data/SO_GH/" + name + "_sample.csv", sep=',', index=False, header=False)
 
 
 if __name__ == "__main__":
-    path_file_ = "./data/SO_GH/GHSO_users.csv"
-    users = data_category(path_file=path_file_, name="GHSO_users")
-    print users.head(), len(users)
+    # path_file_ = "./data/SO_GH/GHSO_users.csv"
+    # users = data_category(path_file=path_file_, name="GHSO_users")
+    # print users.head(), len(users)
 
     path_file_ = "./data/SO_GH/user_repository.csv"
     user_repository = data_category(path_file=path_file_, name="user_repository")
-    # sample_data(df=user_repository, name="user_repository", size=int(len(user_repository) * 0.9))
-    print user_repository.head(), len(user_repository)
-    print len(user_repository.github_user_id.unique()), len(user_repository.github_repository_id.unique())
+    sample_data(df=user_repository, name="user_repository", size=int(len(user_repository) * 0.9))
+    # print user_repository.head(), len(user_repository)
+    # print len(user_repository.github_user_id.unique()), len(user_repository.github_repository_id.unique())
 
-    path_file_ = "./data/SO_GH/user_question.csv"
-    user_question = data_category(path_file=path_file_, name="user_question")
+    # path_file_ = "./data/SO_GH/user_question.csv"
+    # user_question = data_category(path_file=path_file_, name="user_question")
     # sample_data(df=user_question, name="user_question", size=len(user_question))
-    print user_question.head(), len(user_question)
-    print len(user_question.stackoverflow_user_id.unique()), len(user_question.stackoverflow_question_id.unique())
+    # print user_question.head(), len(user_question)
+    # print len(user_question.stackoverflow_user_id.unique()), len(user_question.stackoverflow_question_id.unique())
 
     # GH_SO_repository = user_repository.loc[
     #     user_repository['github_user_id'].isin(users['github_user_id'])]
