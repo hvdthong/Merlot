@@ -74,9 +74,9 @@ if __name__ == "__main__":
     mf_nn = MF_nonnegative(n_user=n_users, n_item=n_questions, n_hidden=64, n_latent_ftr=128)
     mf_nn.build_graph(model="user_item")
     mf_nn.model.summary()
-    plot_model(mf_nn.model, to_file="model_user_repository.png", show_shapes=True, show_layer_names=True)
-    mf_nn.model.summary()
-    exit()
+    # plot_model(mf_nn.model, to_file="model_user_repository.png", show_shapes=True, show_layer_names=True)
+    # mf_nn.model.summary()
+    # exit()
     history = mf_nn.model.fit([train.github_user_id, train.github_repository_id], train.relevant, epochs=1,
                               verbose=1)
     y_pred = np.round(mf_nn.model.predict([test.github_user_id, test.github_repository_id]), 0)
