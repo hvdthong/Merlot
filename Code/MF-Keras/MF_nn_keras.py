@@ -47,8 +47,10 @@ model.compile(optimizer=adam, loss='mean_absolute_error')
 plot_model(model, to_file="model_nn.png", show_shapes=True, show_layer_names=True)
 model.summary()
 
-history = model.fit([train.user_id, train.item_id], train.rating, epochs=50, verbose=0)
+history = model.fit([train.user_id, train.item_id], train.rating, epochs=5, verbose=0)
 y_hat_2 = np.round(model.predict([test.user_id, test.item_id]), 0)
+print y_hat_2
+exit()
 y_true = test.rating
 print(mean_absolute_error(y_true, y_hat_2))
 print(mean_absolute_error(y_true, model.predict([test.user_id, test.item_id])))
