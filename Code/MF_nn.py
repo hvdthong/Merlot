@@ -50,3 +50,4 @@ class MF_nonnegative(object):
             self._create_model_user_item()
         else:
             print "You need to input correct model name"
+            exit()
